@@ -54,6 +54,15 @@ volumes:
 
 4. Após a instalação do container, rode o comando ```docker container ps -a``` para verificar se os container estão funcionando
 
+Deve exibir um trecho semelhante ao abaixo :
+
+```
+CONTAINER ID        IMAGE                          COMMAND                  CREATED              STATUS              PORTS                               NAMES
+a3d1dd0493f9        jupyter/datascience-notebook   "tini -g -- start-no…"   About a minute ago   Up About a minute   0.0.0.0:8891->8888/tcp              jupyter_notebook
+1f284a06370c        mysql:5.7                      "docker-entrypoint.s…"   About a minute ago   Up 46 seconds       33060/tcp, 0.0.0.0:3307->3306/tcp   jupytermysqldocker_db_1
+
+```
+
 5. Se tudo ocorrer bem, o banco já estará criado e o docker já terá instalado o jupyter na sua máquina
 
 ### Criação das tabelas no banco ###
@@ -71,17 +80,19 @@ Pronto, as tabelas e os registros foram criados.
 ### Importação do projeto para o Jupyter ###
 Após a criação dos containers do Jupyter e do Mysql, no diretório escolhido para hospedar o projeto, o mesmo terá criado duas pastas, a pasta modules e a pasta dataset.
 
-1. Acessar a pasta dataset
+**Obs.:** No linux é neceśsário alterar a permissão do usuário para essas duas pastas, pois por padrão elas vem somente com permissão de root.
+
+1. Acessar a pasta selecionada para hospedar o projeto
 2. Clonar o projeto com os códigos fontes contido no link [https://github.com/juniorjrc/jupyter-project.git]
 3. Pronto, o projeto está pronto para ser rodado.
 
 ### Acessando o projeto no Jupyter Notebooks ###
 
-Após toda a configuração acima, acessar o navegador e inserir a seguinte url demonstrada no terminal para o jupyter
+Após toda a configuração acima, acessar o navegador e inserir a seguinte url http://127.0.0.1:8891/?token=dd5aa295780305544ab8183d2c510478592122cde4a3cd4a
 
 O projeto será aberto.
 
-Dentro da pasta work/dataset/project encontra-se o documento do projeto.
+Dentro da pasta work/jupyter-project/project encontra-se o documento do projeto com o nome **project.ipynb**.
 
 Quando o projeto rodar pela primeira vez, poderá ocorrer erros de conexão com o mysql.
 
@@ -89,7 +100,37 @@ Para tal, basta acessar a célula que esta com erro e inserir o código de insta
 
 ```!pip install [nome_do_modulo_com_erro] ```
 
-Será necessário também, no arquivo contido na pasta work/dataset/project/Connection/connect.py, alterar o IP, onde deve ser inserido o IP da interface do docker, para tal, verificar com o comando ipconfig (windows) ou ifconfig (linux)
+Ex.:
+
+```
+!pip install pymysql
+
+from Controller import OcorrenciaController as oc
+ocorrenciaController = oc.OcorrenciaController()
+ocorrenciaController.consultaSomatorioTodasOcorrenciasPeriodo(1, 1)
+```
+**IMPORTANTE**: Após rodar este comando, remover imediatamente o comando do pip install, pois o mesmo já instalou a dependência, caso rode a célula sem apagar o comando, o mesmo irá instalar inúmeras vezes o módulo correspondente.
+
+Será necessário também, no arquivo contido na pasta work/jupyter-project/project/Connection/connect.py, alterar o IP, onde deve ser inserido o IP da interface do docker, para tal, verificar com o comando ipconfig (windows) ou ifconfig (linux)
+
+Ex.:
+
+```
+import pymysql
+
+#INSTÂNCIA DA CONEXÃO COM O BANCO
+class Conexao():
+    def __init__(self):
+        self.conexao = pymysql.connect(
+            host='{IP_DO_DOCKER_AQUI}',
+            port=3307,
+            database='PROJREDES',
+            user='root',
+            password='root'
+        )
+
+        self.bd = self.conexao.cursor()
+```
 
 
 
