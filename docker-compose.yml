@@ -1,16 +1,15 @@
 version: '3.3'
 services:
   db:
-    image: mysql:5.7
-    restart: always
+    image: db-project
     environment:
       MYSQL_DATABASE: 'PROJREDES'
       # So you don't have to use root, but you can if you like
-      MYSQL_USER: 'root'
+      MYSQL_USER: 'MainUser'
       # You can use whatever password you like
-      MYSQL_PASSWORD: 'root'
+      MYSQL_PASSWORD: 'MainPassword'
       # Password for root access
-      MYSQL_ROOT_PASSWORD: 'root'
+      MYSQL_ROOT_PASSWORD: 'RootPassword'
     ports:
       # <Port exposed> : < MySQL Port running inside container>
       - '3307:3306'
@@ -24,10 +23,10 @@ services:
   datascience-notebook:
       image:    jupyter/datascience-notebook
       volumes:
-        - /home/jorgejr/Documentos/GitHub/Projeto Redes:/home/jovyan/work
-        - /home/jorgejr/Documentos/GitHub/Projeto Redes:/home/jovyan/work/datasets
-        - /home/jorgejr/Documentos/GitHub/Projeto Redes:/home/jovyan/work/modules
-        - /home/jorgejr/Documentos/GitHub/Projeto Redes:/etc/ssl/notebook
+        - /home/jorgejr/Documentos/Projeto Redes:/home/jovyan/work
+        - /home/jorgejr/Documentos/Projeto Redes:/home/jovyan/work/datasets
+        - /home/jorgejr/Documentos/Projeto Redes:/home/jovyan/work/modules
+        - /home/jorgejr/Documentos/Projeto Redes:/etc/ssl/notebook
       ports:
         - 8891:8888
       container_name:   jupyter_notebook
