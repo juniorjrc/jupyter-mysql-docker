@@ -23,10 +23,10 @@ services:
   datascience-notebook:
       image:    jupyter/datascience-notebook
       volumes:
-        - /home/jorgejr/Documentos/Projeto Redes:/home/jovyan/work
-        - /home/jorgejr/Documentos/Projeto Redes:/home/jovyan/work/datasets
-        - /home/jorgejr/Documentos/Projeto Redes:/home/jovyan/work/modules
-        - /home/jorgejr/Documentos/Projeto Redes:/etc/ssl/notebook
+        - /home/jorgejr/Documentos/GitHub/ProjectRedes:/home/jovyan/work
+        - /home/jorgejr/Documentos/GitHub/ProjectRedes:/home/jovyan/work/datasets
+        - /home/jorgejr/Documentos/GitHub/ProjectRedes:/home/jovyan/work/modules
+        - /home/jorgejr/Documentos/GitHub/ProjectRedes:/etc/ssl/notebook
       ports:
         - 8891:8888
       container_name:   jupyter_notebook
